@@ -84,16 +84,17 @@ function rollDice() {
   dice1.style.display = "block";
   dice2.style.display = "block";
 
-  // Display Dice
+  // Display dices
   dice1.src = `img/dice-${rollValue1}.png`;
   dice2.src = `img/dice-${rollValue2}.png`;
 
-  // Display Sum
+  // Check if either is 1 or if both are 6 -- if yes, clear score and switch player
   if ((rollValue1 === 1 || rollValue2 === 1) || (rollValue1 == 6 && rollValue2 == 6)) {
     roundScore = 0;
     playerCurrentScoreElement.textContent = 0;
     switchPlayer();
   } else {
+    // If no, sum and display the player score
     roundScore += rollValue1 + rollValue2;
     playerCurrentScoreElement.textContent = roundScore;
   }
