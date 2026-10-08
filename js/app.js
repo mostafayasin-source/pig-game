@@ -20,7 +20,7 @@ const current0 = document.querySelector("#current-0");
 const current1 = document.querySelector("#current-1");
 
 const dice1 = document.querySelector("#dice-1");
-// "andra steget" const dice2 = document.querySelector("#dice-2");
+const dice2 = document.querySelector("#dice-2");
 
 const btnNew = document.querySelector(".btn-new");
 const btnRoll = document.querySelector(".btn-roll");
@@ -28,6 +28,9 @@ const btnHold = document.querySelector(".btn-hold");
 
 const name0 = document.querySelector("#name-0");
 const name1 = document.querySelector("#name-1");
+
+const player0 = document.querySelector(".player-0-panel");
+const player1 = document.querySelector(".player-1-panel");
 
 // ---------- 3. Funktioner ----------
 
@@ -41,28 +44,6 @@ function init() {
   score0.textContent = 0;
   score1.textContent = 0;
 
-// SPEL-2: Körs när man klickar på "Slå tärning"
-function rollDice() {
-    function getRandomInt(min, max) {
-        return Math.trunc(Math.random() * (max - min) + min);
-    }
-
-    const playerCurrentScoreElement = document.getElementById(`current-${activePlayer}`);
-    const dice1 = document.getElementById("dice-1");
-    const dice2 = document.getElementById("dice-2");
-
-    // Roll 1,2
-    const rollValue1 = getRandomInt(1,6);
-    const rollValue2 = getRandomInt(1,6);
-
-    // Display Dice
-    dice1.src = `img/dice-${rollValue1}.png`;
-    dice2.src = `img/dice-${rollValue2}.png`;
-
-    // Display Sum
-    playerCurrentScoreElement.innerText = parseInt(playerCurrentScoreElement.innerText) + rollValue1 + rollValue2;
-}
-
   // class reset
   player0.classList.add("active");
   player1.classList.remove("active");
@@ -71,24 +52,69 @@ function rollDice() {
   name0.textContent = "Spelare 1";
   name1.textContent = "Spelare 2";
 
+  // reset counter
+  current0.textContent = 0;
+  current1.textContent = 0;
+
   // when starting a new game, class must be removed from both players.
   player0.classList.remove("winner");
   player1.classList.remove("winner");
+
+  dice1.style.display = "none";
+  dice2.style.display = "none";
+}
+
+// SPEL-2: Körs när man klickar på "Slå tärning"
+function rollDice() {
+  if (!isPlaying) {
+    return;
+  }
+  function getRandomInt(min, max) {
+    return Math.trunc(Math.random() * (max - min) + min);
+  }
+
+  const playerCurrentScoreElement = document.getElementById(
+    `current-${activePlayer}`,
+  );
+
+  // Roll 1,2
+  const rollValue1 = getRandomInt(1, 7);
+  const rollValue2 = getRandomInt(1, 7);
+
+  console.log(rollValue1, rollValue2);
+
+  dice1.style.display = "block";
+  dice2.style.display = "block";
+
+  // Display Dice
+  dice1.src = `img/dice-${rollValue1}.png`;
+  dice2.src = `img/dice-${rollValue2}.png`;
+
+  // Display Sum
+  if (rollValue1 === 1 || rollValue2 === 1) {
+    roundScore = 0;
+    playerCurrentScoreElement.textContent = 0;
+    switchPlayer();
+  } else {
+    roundScore += rollValue1 + rollValue2;
+    playerCurrentScoreElement.textContent = roundScore;
+  }
 }
 
 // SPEL-2: Byter till den andra spelaren
 function switchPlayer() {
-    // Invertera värdet av activePlayer
-    activePlayer = 1 - activePlayer;
-}
+  // Invertera värdet av activePlayer
+  activePlayer = 1 - activePlayer;
 
-// SPEL-2: Byter till den andra spelaren
-function switchPlayer() {}
+  player0.classList.toggle("active");
+  player1.classList.toggle("active");
+}
 
 // ---------- 4. Händelser ----------
 
 // New Game button
 btnNew.addEventListener("click", init);
+btnRoll.addEventListener("click", rollDice);
 
 // Initialize game on page load
 init();
