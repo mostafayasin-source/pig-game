@@ -41,10 +41,27 @@ function init() {
   score0.textContent = 0;
   score1.textContent = 0;
 
-  current0.textContent = 0;
-  current1.textContent = 0;
+// SPEL-2: Körs när man klickar på "Slå tärning"
+function rollDice() {
+    function getRandomInt(min, max) {
+        return Math.trunc(Math.random() * (max - min) + min);
+    }
 
-  dice.style.display = "none";
+    const playerCurrentScoreElement = document.getElementById(`current-${activePlayer}`);
+    const dice1 = document.getElementById("dice-1");
+    const dice2 = document.getElementById("dice-2");
+
+    // Roll 1,2
+    const rollValue1 = getRandomInt(1,6);
+    const rollValue2 = getRandomInt(1,6);
+
+    // Display Dice
+    dice1.src = `img/dice-${rollValue1}.png`;
+    dice2.src = `img/dice-${rollValue2}.png`;
+
+    // Display Sum
+    playerCurrentScoreElement.innerText = parseInt(playerCurrentScoreElement.innerText) + rollValue1 + rollValue2;
+}
 
   // class reset
   player0.classList.add("active");
@@ -59,11 +76,11 @@ function init() {
   player1.classList.remove("winner");
 }
 
-// SPEL-2: Körs när man klickar på "Slå tärning"
-function rollDice() {}
-
-// SPEL-3 och SPEL-4: Körs när man klickar på "Håll poäng"
-function holdScore() {}
+// SPEL-2: Byter till den andra spelaren
+function switchPlayer() {
+    // Invertera värdet av activePlayer
+    activePlayer = 1 - activePlayer;
+}
 
 // SPEL-2: Byter till den andra spelaren
 function switchPlayer() {}
