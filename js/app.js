@@ -81,8 +81,6 @@ function rollDice() {
   const rollValue1 = getRandomInt(1, 7);
   const rollValue2 = getRandomInt(1, 7);
 
-  console.log(rollValue1, rollValue2);
-
   dice1.style.display = "block";
   dice2.style.display = "block";
 
@@ -91,7 +89,7 @@ function rollDice() {
   dice2.src = `img/dice-${rollValue2}.png`;
 
   // Display Sum
-  if (rollValue1 === 1 || rollValue2 === 1) {
+  if ((rollValue1 === 1 || rollValue2 === 1) || (rollValue1 == 6 && rollValue2 == 6)) {
     roundScore = 0;
     playerCurrentScoreElement.textContent = 0;
     switchPlayer();
